@@ -72,6 +72,7 @@ const Datatable = () => {
         checkboxSelection
       />
     </div>
+    
   );
 };
 
