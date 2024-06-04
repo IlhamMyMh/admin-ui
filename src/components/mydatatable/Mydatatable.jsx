@@ -21,8 +21,8 @@ const rows = [
 
 const MyDatatable = ({ title }) => {
   return (
-    <div className="myDatatable">
-      <div className="myDatatableTitle">{title}</div>
+    <div className="mydatatable">
+      <div className="mydatatableTitle">{title}</div>
       <DataGrid
         rows={rows}
         columns={columns}
