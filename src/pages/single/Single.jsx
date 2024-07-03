@@ -25,14 +25,14 @@ const Single = ({columns}) => {
                 className="itemImg"
               />
               <div className="details">
-                <h1 className="itemTitle">Cristiano Ronaldo</h1>
+                <h1 className="itemTitle">Takahashi Hoshino</h1>
                 <div className="detailItem">
                   <span className="itemKey">ID:</span>
                   <span className="itemValue">{id}</span>
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">Email:</span>
-                  <span className="itemValue">RonaldoGoat7@gmail.com</span>
+                  <span className="itemValue">Hoshinokawai@gmail.com</span>
                 </div>
                 <div className="detailItem">
                   <span className="itemKey">Phone:</span>
