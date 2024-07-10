@@ -4,13 +4,18 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useEffect, useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const Widget = ({ type }) => {
   let data;
 
-  //temporary
-  const amount = 100;
-  const diff = 20;
+  //variabel amount untuk menyimpan angka jumlah data yang akan ditampilkan pada widget.
+  const [amount, setAmount] = useState(null);
+  const [diff, setDiff] = useState(null);
+  //variabel diff untuk menyimpan angka prosentase perubahan data, ada kenaikan (nilainya positif) atau penurunan (nilainya negatif).
 
   switch (type) {
     case "user":
@@ -18,6 +23,7 @@ const Widget = ({ type }) => {
         title: "USERS",
         isMoney: false,
         link: "See all users",
+        query:"users",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -31,6 +37,7 @@ const Widget = ({ type }) => {
       break;
     case "order":
       data = {
+        query:"orders",
         title: "ORDERS",
         isMoney: false,
         link: "View all orders",
@@ -47,6 +54,7 @@ const Widget = ({ type }) => {
       break;
     case "earning":
       data = {
+        query:"earnings",
         title: "EARNINGS",
         isMoney: true,
         link: "View net earnings",
@@ -60,6 +68,7 @@ const Widget = ({ type }) => {
       break;
     case "balance":
       data = {
+        query:"balance",
         title: "BALANCE",
         isMoney: true,
         link: "See details",
@@ -78,6 +87,38 @@ const Widget = ({ type }) => {
       break;
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const today = new Date();
+      const lastMonth = new Date(new Date().setMonth(today.getMonth() - 1));
+      const prevMonth = new Date(new Date().setMonth(today.getMonth() - 2));
+
+      const lastMonthQuery = query(
+        collection(db, data.query),
+        where("timeStamp", "<=", today),
+        where("timeStamp", ">", lastMonth)
+      );
+      const prevMonthQuery = query(
+        collection(db, data.query),
+        where("timeStamp", "<=", lastMonth),
+        where("timeStamp", ">", prevMonth)
+      );
+
+      const lastMonthData = await getDocs(lastMonthQuery);
+      const prevMonthData = await getDocs(prevMonthQuery); 
+
+      setAmount(lastMonthData.docs.length);
+      setDiff(100);
+
+      if(prevMonthData.docs.length > 0){
+        setDiff(
+          ((lastMonthData.docs.length - prevMonthData.docs.length) / prevMonthData.docs.length) * 100
+        );
+      } 
+    };
+    fetchData();
+  }, [data.query]);
+
   return (
     <div className="widget">
       <div className="left">
@@ -88,8 +129,8 @@ const Widget = ({ type }) => {
         <div className="link">{data.link}</div>
       </div>
       <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUpIcon />
+        <div className={`percentage ${diff >= 0 ? "positive" : "negative"}`}>
+          {diff >= 0 ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           {diff} %
         </div>
         {data.icon}
