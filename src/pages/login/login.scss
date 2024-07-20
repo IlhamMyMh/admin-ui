@@ -1,34 +1,56 @@
 .login{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    form{
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    input{
+      width: 200px;
+      height: 30px;
+      margin: 10px;
+    }
+
+    button{
+      width: 200px;
+      height: 30px;
+      border: none;
+      background-color: brown;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    span{
+      font-size: 12px;
+      color: red;
+      margin-top: 10px;
+    }
+    .items {
       display: flex;
-      flex-direction: column;
       align-items: center;
 
-      input{
-        width: 200px;
-        height: 30px;
-        margin: 10px;
-      }
+      .item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        position: relative;
 
-      button{
-        width: 200px;
-        height: 30px;
-        border: none;
-        background-color: brown;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-      }
+        .icon {
+          font-size: 20px;
+        }
 
-      span{
-        font-size: 12px;
-        color: red;
-        margin-top: 10px;
+        .avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
       }
     }
+  }
+  
 }

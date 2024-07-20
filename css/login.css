@@ -28,3 +28,21 @@
   color: red;
   margin-top: 10px;
 }
+.login form .items {
+  display: flex;
+  align-items: center;
+}
+.login form .items .item {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  position: relative;
+}
+.login form .items .item .icon {
+  font-size: 20px;
+}
+.login form .items .item .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}

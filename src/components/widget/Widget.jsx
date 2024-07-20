@@ -4,6 +4,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import CategoryIcon from "@mui/icons-material/Category";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useEffect, useState } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -12,10 +13,8 @@ import { db } from "../../firebase";
 const Widget = ({ type }) => {
   let data;
 
-  //variabel amount untuk menyimpan angka jumlah data yang akan ditampilkan pada widget.
   const [amount, setAmount] = useState(null);
   const [diff, setDiff] = useState(null);
-  //variabel diff untuk menyimpan angka prosentase perubahan data, ada kenaikan (nilainya positif) atau penurunan (nilainya negatif).
 
   switch (type) {
     case "user":
@@ -23,7 +22,7 @@ const Widget = ({ type }) => {
         title: "USERS",
         isMoney: false,
         link: "See all users",
-        query:"users",
+        query : "users",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -37,10 +36,10 @@ const Widget = ({ type }) => {
       break;
     case "order":
       data = {
-        query:"orders",
-        title: "ORDERS",
+        title: "PRODUCTS",
         isMoney: false,
         link: "View all orders",
+        query : "products",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -54,10 +53,10 @@ const Widget = ({ type }) => {
       break;
     case "earning":
       data = {
-        query:"earnings",
         title: "EARNINGS",
         isMoney: true,
         link: "View net earnings",
+        query : "users",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -68,16 +67,33 @@ const Widget = ({ type }) => {
       break;
     case "balance":
       data = {
-        query:"balance",
         title: "BALANCE",
         isMoney: true,
         link: "See details",
+        query : "users",
         icon: (
           <AccountBalanceWalletOutlinedIcon
             className="icon"
             style={{
               backgroundColor: "rgba(128, 0, 128, 0.2)",
               color: "purple",
+            }}
+          />
+        ),
+      };
+      break;
+      case "category":
+      data = {
+        title: "CATEGORIES",
+        isMoney: false,
+        link: "View all categories",
+        query: "categories",
+        icon: (
+          <CategoryIcon
+            className="icon"
+            style={{
+              backgroundColor: "rgba(255, 0, 0, 0.2)",
+              color: "crimson",
             }}
           />
         ),
@@ -112,12 +128,13 @@ const Widget = ({ type }) => {
 
       if(prevMonthData.docs.length > 0){
         setDiff(
-          ((lastMonthData.docs.length - prevMonthData.docs.length) / prevMonthData.docs.length) * 100
+          ((lastMonthData.docs.length - prevMonthData.docs.length) / prevMonthData.docs.length) *
+            100
         );
       } 
     };
     fetchData();
-  }, [data.query]);
+  }, []);
 
   return (
     <div className="widget">
@@ -129,8 +146,8 @@ const Widget = ({ type }) => {
         <div className="link">{data.link}</div>
       </div>
       <div className="right">
-        <div className={`percentage ${diff >= 0 ? "positive" : "negative"}`}>
-          {diff >= 0 ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        <div className={`percentage ${diff < 0 ? "negative" : "positive"}`}>
+          {diff < 0 ? <KeyboardArrowDownIcon/> : <KeyboardArrowUpIcon/> }
           {diff} %
         </div>
         {data.icon}

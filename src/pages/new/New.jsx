@@ -3,7 +3,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useEffect, useState } from "react";
-import {
+import { 
   doc,
   serverTimestamp,
   setDoc,
@@ -22,8 +22,8 @@ const New = ({ inputs, title }) => {
 
   const navigate = useNavigate()
 
-  const location = useLocation();
-  const type = location.pathname.split('/')[1];
+  const location = useLocation(); 
+  const type = location.pathname.split('/')[1]; 
 
   useEffect(() => {
     const uploadFile = () => {
@@ -87,15 +87,15 @@ const New = ({ inputs, title }) => {
             ...data,
             timeStamp: serverTimestamp(),
           });
-          break;
+          break; 
         default:
           await addDoc(collection(db, type), {
             ...data,
             timeStamp: serverTimestamp(),
           });
           break;
-      }
-
+      } 
+      
       navigate(-1)
     } catch (err) {
       console.log(err);
@@ -147,7 +147,9 @@ const New = ({ inputs, title }) => {
                 </div>
               ))}
               <button disabled={per !== null && per < 100} type="submit">
+                <li data-testid = "submit">
                 Send
+                </li>
               </button>
             </form>
           </div>
